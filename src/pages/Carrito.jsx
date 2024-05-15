@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import useGetData from "../hooks/useGetData";
 import CardProduct from "../components/CardProduct";
+import Button from "../components/Button";
 
 function Carrito() {
   const [productos, setProductos] = useState([]);
@@ -20,7 +21,7 @@ function Carrito() {
   }, [actualizar]);
 
   return (
-    <div className="p-5">
+    <div className="p-5 relative">
       {!isPending && (
         <Success
           data={data.response}
@@ -33,9 +34,24 @@ function Carrito() {
 }
 
 const Success = ({ data, producto, setActualizar }) => {
-  console.log(data);
+  const productosMapeados = producto.map(
+    (id) => data.filter((product) => product.idproducto === id)[0]
+  );
+
   return (
     <>
+      <div>
+        <i>
+          Subtotal: $
+          {productosMapeados.reduce(
+            (a, b) => Number(a) + Number(b.precioUnitario),
+            0
+          )}
+        </i>
+      </div>
+      <div className="w-full flex items-center justify-center p-5 sticky top-0 bg-white">
+        <Button label={`Realizar pedido (${producto.length}) producto(s)`} />
+      </div>
       {producto.length > 0 &&
         producto.map((id, index) => (
           <CardProduct
