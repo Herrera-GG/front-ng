@@ -8,7 +8,7 @@ function CardProduct({ data, isInCart, indexElement, extra }) {
     productos.push(id);
 
     localStorage.setItem("productos", JSON.stringify(productos));
-    toast.success("Añadido al carrito.");
+    toast.success("Añadido al carrito");
   };
   const removeFromCart = () => {
     const productos = JSON.parse(localStorage.getItem("productos"));

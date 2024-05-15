@@ -17,7 +17,7 @@ export default Axios.create({
     /* Authorization: token, */
   },
   baseURL: urlMain + "/api/",
-  validateStatus: function (status) {
+  /*  validateStatus: function (status) {
     console.log({ status });
     if (status === 403) {
       window.location.href = "/login";
@@ -25,5 +25,5 @@ export default Axios.create({
     }
 
     return status >= 200 && status < 300; // default
-  },
+  }, */
 });
