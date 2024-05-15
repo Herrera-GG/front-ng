@@ -9,7 +9,7 @@ function Layout() {
   return (
     <div className="w-full h-full">
       <ToastContainer autoClose={800} closeOnClick />
-      <header className="bg-slate-900 h-1/6 flex flex-col text-white">
+      <header className="bg-gray-900 h-1/6 flex flex-col text-white">
         <div className="flex">
           <img alt="logo" src="" height="200px" />
           <NavLink to="carrito">Carrito</NavLink>
