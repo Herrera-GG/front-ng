@@ -6,8 +6,8 @@ import CardProduct from "../components/CardProduct";
 
 function Carrito() {
   const [productos, setProductos] = useState([]);
+  const [actualizar, setActualizar] = useState(false);
   const { data, isPending } = useGetData("productos");
-  console.log(data, productos);
 
   useEffect(() => {
     const productos = localStorage.getItem("productos");
@@ -17,34 +17,36 @@ function Carrito() {
     } else {
       setProductos(JSON.parse(productos));
     }
-
-    console.log(productos);
-  }, []);
+  }, [actualizar]);
 
   return (
-    <div>
-      {!isPending && <Success data={data.response} producto={productos} />}
+    <div className="p-5">
+      {!isPending && (
+        <Success
+          data={data.response}
+          producto={productos}
+          setActualizar={setActualizar}
+        />
+      )}
     </div>
   );
 }
 
-const Success = ({ data, producto }) => {
+const Success = ({ data, producto, setActualizar }) => {
   console.log(data);
   return (
-    <div>
-      {producto.map((id) => {
-        console.log(
-          data.filter((producto) => producto.idproducto === id),
-          id
-        );
-        return (
+    <>
+      {producto.length > 0 &&
+        producto.map((id, index) => (
           <CardProduct
             data={data.filter((producto) => producto.idproducto === id)[0]}
             isInCart
+            indexElement={index}
+            extra={setActualizar}
           />
-        );
-      })}
-    </div>
+        ))}
+      {producto.length <= 0 && <p>Agrega productos a tu carrito.</p>}
+    </>
   );
 };
 
