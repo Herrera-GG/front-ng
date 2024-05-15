@@ -2,12 +2,14 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import useGetData from "../hooks/useGetData";
 import { NavLink } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 function Layout() {
   const { data, isPending } = useGetData("categorias");
   return (
     <div className="w-full h-full">
-      <header className="bg-slate-900 h-1/6 flex flex-col text-white">
+      <ToastContainer autoClose={800} closeOnClick />
+      <header className="bg-gray-900 h-1/6 flex flex-col text-white">
         <div className="flex">
           <img alt="logo" src="" height="200px" />
           <NavLink to="carrito">Carrito</NavLink>
@@ -39,7 +41,9 @@ function Layout() {
             ))}
         </div>
       </header>
-      <Outlet />
+      <div className="w-full h-5/6 overflow-y-auto">
+        <Outlet />
+      </div>
     </div>
   );
 }
