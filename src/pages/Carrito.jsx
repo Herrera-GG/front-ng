@@ -18,8 +18,39 @@ import { toast } from "react-toastify";
 function Carrito() {
   const [productos, setProductos] = useState([]);
   const [actualizar, setActualizar] = useState(false);
+  const [showDiag, setShowDiag] = useState(false);
+  const [numTel, setNumTel] = useState("");
 
-  const { data, isPending } = useGetData("productos");
+  const productosList = productos.flat(2);
+
+  console.log(productosList);
+  const send = async (e) => {
+    e.preventDefault();
+    try {
+      await Axios.post("carritos/crear", {
+        ...numTel,
+        entregado: false,
+        cantidad: productosList.length,
+        autorizadoPor: null,
+        total: productosList.reduce(
+          (a, b) => Number(a) + Number(b.precioUnitario),
+          0
+        ),
+        productos: productos,
+      });
+      localStorage.setItem("productos", JSON.stringify([]));
+      setActualizar((prev) => !prev);
+      toast.success("Orden creada.");
+    } catch (error) {
+      console.log(error);
+      toast.error("Algun producto no tiene existencias");
+    }
+    setShowDiag(false);
+  };
+  const handle = (e) => {
+    const { name, value } = e.target;
+    setNumTel((prev) => ({ ...prev, [name]: value }));
+  };
 
   useEffect(() => {
     const productos = localStorage.getItem("productos");
@@ -37,53 +68,6 @@ function Carrito() {
 
   return (
     <div className="p-5 relative">
-      {!isPending && (
-        <Success
-          data={data.response}
-          producto={productos}
-          setActualizar={setActualizar}
-        />
-      )}
-    </div>
-  );
-}
-
-const Success = ({ data, producto, setActualizar }) => {
-  const [numTel, setNumTel] = useState("");
-  const productosMapeados = producto.map(
-    (id) => data.filter((product) => product.idproducto === id)[0]
-  );
-  const [showDiag, setShowDiag] = useState(false);
-  const send = async (e) => {
-    e.preventDefault();
-    try {
-      await Axios.post("carritos/crear", {
-        ...numTel,
-        entregado: false,
-        cantidad: producto.length,
-        autorizadoPor: null,
-        total: productosMapeados.reduce(
-          (a, b) => Number(a) + Number(b.precioUnitario),
-          0
-        ),
-        productos: producto,
-      });
-      localStorage.setItem("productos", JSON.stringify([]));
-      setActualizar((prev) => !prev);
-      toast.success("Orden creada.");
-    } catch (error) {
-      console.log(error);
-      toast.error("Algun producto no tiene existencias");
-    }
-    setShowDiag(false);
-  };
-  const handle = (e) => {
-    const { name, value } = e.target;
-    setNumTel((prev) => ({ ...prev, [name]: value }));
-  };
-
-  return (
-    <>
       <Dialog open={showDiag} handler={() => setShowDiag(false)}>
         <DialogHeader>Realizar orden</DialogHeader>
         <DialogBody>
@@ -121,8 +105,8 @@ const Success = ({ data, producto, setActualizar }) => {
       </Dialog>
       <div>
         <i>
-          Subtotal: $
-          {productosMapeados.reduce(
+          Subtotal: ${" "}
+          {productosList.reduce(
             (a, b) => Number(a) + Number(b.precioUnitario),
             0
           )}
@@ -131,8 +115,35 @@ const Success = ({ data, producto, setActualizar }) => {
       <div className="w-full flex items-center justify-center p-5 sticky top-0 bg-white">
         <Button
           onClick={() => setShowDiag(true)}
-        >{`Realizar pedido (${producto.length}) producto(s)`}</Button>
+        >{`Realizar pedido (${productosList.length}) producto(s)`}</Button>
       </div>
+      {productos.map((producto, index) => (
+        <CardProduct
+          data={producto[0]}
+          cantidad={producto.length}
+          indexElement={index}
+          extra={setActualizar}
+          isInCart
+        />
+      ))}
+      {/* {!isPending && (
+        <Success
+          data={data.response}
+          producto={productos}
+          setActualizar={setActualizar}
+        />
+      )} */}
+    </div>
+  );
+}
+
+const Success = ({ data, producto, setActualizar }) => {
+  const productosMapeados = producto.map(
+    (id) => data.filter((product) => product.idproducto === id)[0]
+  );
+
+  return (
+    <>
       {producto.length > 0 &&
         producto.map((id, index) => (
           <CardProduct

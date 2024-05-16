@@ -15,7 +15,7 @@ function Routes() {
       path: "/",
       loader: async () => {
         try {
-          await Axios.get("productos");
+          await Axios.get("status");
           return null;
         } catch (err) {
           return redirect("/mantenimiento");
@@ -23,13 +23,32 @@ function Routes() {
       },
       element: <Layout />,
       children: [
-        { index: true, element: <Home /> },
+        {
+          index: true,
+          element: <Home />,
+          loader: async () => {
+            try {
+              await Axios.get("status");
+              return null;
+            } catch (err) {
+              return redirect("/mantenimiento");
+            }
+          },
+        },
         { path: "categoria/:idcategoria", element: <Categorias /> },
         { path: "carrito", element: <Carrito /> },
       ],
     },
     {
       path: "/mantenimiento",
+      loader: async () => {
+        try {
+          await Axios.get("status");
+          return redirect("/");
+        } catch (err) {
+          return null;
+        }
+      },
       element: <Mantenimiento />,
     },
   ]);
