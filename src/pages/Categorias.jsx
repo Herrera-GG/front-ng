@@ -9,7 +9,7 @@ function Categorias() {
   const { data, isPending } = useGetData(`categorias/obtener/${idcategoria}`);
   console.log(data);
   return (
-    <div className=" p-5">
+    <div className=" p-10 flex flex-wrap gap-5 justify-center">
       {!isPending && data.response[0].productos.length <= 0 && (
         <div>No hay productos</div>
       )}

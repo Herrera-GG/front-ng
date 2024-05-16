@@ -1,5 +1,7 @@
 import React from "react";
 import { toast } from "react-toastify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 
 function CardProduct({ data, isInCart, indexElement, extra }) {
   const addToCart = (id) => {
@@ -23,10 +25,11 @@ function CardProduct({ data, isInCart, indexElement, extra }) {
   return (
     <>
       <div
-        className={`w-full border rounded-lg shadow flex ${
+        className={`w-3/4 sm:w-1/4 border rounded-lg shadow-2xl flex ${
           isInCart ? "flex-row" : "flex-col"
         } items-center p-5 gap-5 mb-5`}
       >
+        <h5>{data.nombre}</h5>
         <img src={data.img} loading="lazy" className=" size-40 object-cover" />
         <div className="flex justify-around w-full">
           {isInCart && (
@@ -39,7 +42,7 @@ function CardProduct({ data, isInCart, indexElement, extra }) {
 
           {!isInCart && (
             <button type="button" onClick={() => addToCart(data.idproducto)}>
-              Añadir al carrito
+              <FontAwesomeIcon className=" size-6" icon={faCartShopping} />
             </button>
           )}
           {isInCart && (
