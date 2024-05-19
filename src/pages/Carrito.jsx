@@ -14,42 +14,53 @@ import {
 } from "@material-tailwind/react";
 import Axios from "../Axios";
 import { toast } from "react-toastify";
+import { Textarea } from "@material-tailwind/react";
+import CardPedidos from "../components/CardPedidos";
+import { Spinner } from "@material-tailwind/react";
 
 function Carrito() {
   const [productos, setProductos] = useState([]);
   const [actualizar, setActualizar] = useState(false);
   const [showDiag, setShowDiag] = useState(false);
   const [numTel, setNumTel] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [envio, setEnvio] = useState(4);
+
+  const { data, isPending } = useGetData(
+    `carritos/obtener/${localStorage.getItem("numTel")}`
+  );
 
   const productosList = productos.flat(2);
 
-  console.log(productosList);
   const send = async (e) => {
+    setLoading(true);
     e.preventDefault();
     try {
       await Axios.post("carritos/crear", {
         ...numTel,
-        entregado: false,
         cantidad: productosList.length,
-        autorizadoPor: null,
         total: productosList.reduce(
           (a, b) => Number(a) + Number(b.precioUnitario),
           0
         ),
         productos: productos,
+        envio,
       });
       localStorage.setItem("productos", JSON.stringify([]));
       setActualizar((prev) => !prev);
       toast.success("Orden creada.");
     } catch (error) {
-      console.log(error);
       toast.error("Algun producto no tiene existencias");
     }
+    setLoading(false);
     setShowDiag(false);
   };
   const handle = (e) => {
     const { name, value } = e.target;
     setNumTel((prev) => ({ ...prev, [name]: value }));
+    if (name === "num_tel") {
+      localStorage.setItem("numTel", value);
+    }
   };
 
   useEffect(() => {
@@ -63,11 +74,21 @@ function Carrito() {
     }
     if (!numTel) {
       localStorage.setItem("numTel", "");
+    } else {
+      setNumTel(() => ({ num_tel: numTel }));
     }
   }, [actualizar]);
 
+  useEffect(() => {
+    if (productosList.length > 4) {
+      setEnvio(0);
+    } else {
+      setEnvio(4);
+    }
+  }, [productosList]);
+
   return (
-    <div className="p-5 relative">
+    <div className="p-5 relative flex flex-col items-center">
       <Dialog open={showDiag} handler={() => setShowDiag(false)}>
         <DialogHeader>Realizar orden</DialogHeader>
         <DialogBody>
@@ -79,6 +100,15 @@ function Carrito() {
               onChange={handle}
               maxLength="10"
               minLength="10"
+              value={numTel.hasOwnProperty("num_tel") ? numTel["num_tel"] : ""}
+              required
+            />
+            <Textarea
+              label="Lugar de entrega"
+              color="blue"
+              resize
+              name="lugarEntrega"
+              onChange={handle}
               required
             />
             <i>Tú numero de telefono se usara para verificar tu orden.</i>
@@ -86,7 +116,12 @@ function Carrito() {
               Si no se logra contactar con el numero de telefono proporcionado,
               se cancelara la orden.
             </strong>
-            <Button variant="gradient" color="blue" type="submit">
+            <Button
+              variant="gradient"
+              color="blue"
+              type="submit"
+              loading={loading}
+            >
               <span>Confirmar</span>
             </Button>
           </form>
@@ -103,59 +138,57 @@ function Carrito() {
           </Button>
         </DialogFooter>
       </Dialog>
-      <div>
-        <i>
-          Subtotal: ${" "}
-          {productosList.reduce(
-            (a, b) => Number(a) + Number(b.precioUnitario),
-            0
-          )}
-        </i>
-      </div>
-      <div className="w-full flex items-center justify-center p-5 sticky top-0 bg-white">
-        <Button
-          onClick={() => setShowDiag(true)}
-        >{`Realizar pedido (${productosList.length}) producto(s)`}</Button>
-      </div>
-      {productos.map((producto, index) => (
-        <CardProduct
-          data={producto[0]}
-          cantidad={producto.length}
-          indexElement={index}
-          extra={setActualizar}
-          isInCart
-        />
-      ))}
-      {/* {!isPending && (
-        <Success
-          data={data.response}
-          producto={productos}
-          setActualizar={setActualizar}
-        />
-      )} */}
+
+      {productos.length > 0 && (
+        <>
+          <div className="flex flex-col">
+            <i>
+              Subtotal: ${" "}
+              {productosList.reduce(
+                (a, b) => Number(a) + Number(b.precioUnitario),
+                0
+              )}
+            </i>
+            <i>Envio: ${envio}</i>
+            <strong className="w-full border-t-2 text-xl">
+              Total: $
+              {productosList.reduce(
+                (a, b) => Number(a) + Number(b.precioUnitario),
+                0
+              ) + envio}
+            </strong>
+          </div>
+          <div className="w-full flex items-center justify-center p-5 sticky top-0 bg-white">
+            <Button
+              onClick={() => setShowDiag(true)}
+            >{`Realizar pedido (${productosList.length}) producto(s)`}</Button>
+          </div>
+          {productos.map((producto, index) => (
+            <CardProduct
+              key={producto[0].idproducto}
+              data={producto[0]}
+              cantidad={producto.length}
+              indexElement={index}
+              extra={setActualizar}
+              isInCart
+            />
+          ))}
+        </>
+      )}
+      {productos.length <= 0 && (
+        <p className="text-center">Agrega productos a tu carrito.</p>
+      )}
+      {!isPending && (
+        <div className="flex flex-col gap-5">
+          <h6 className="text-center">Historial de pedidos</h6>
+          {data.response.map((el) => (
+            <CardPedidos el={el} />
+          ))}
+        </div>
+      )}
+      {isPending && <Spinner className="size-40" />}
     </div>
   );
 }
-
-const Success = ({ data, producto, setActualizar }) => {
-  const productosMapeados = producto.map(
-    (id) => data.filter((product) => product.idproducto === id)[0]
-  );
-
-  return (
-    <>
-      {producto.length > 0 &&
-        producto.map((id, index) => (
-          <CardProduct
-            data={data.filter((producto) => producto.idproducto === id)[0]}
-            isInCart
-            indexElement={index}
-            extra={setActualizar}
-          />
-        ))}
-      {producto.length <= 0 && <p>Agrega productos a tu carrito.</p>}
-    </>
-  );
-};
 
 export default Carrito;

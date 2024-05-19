@@ -1,6 +1,7 @@
 import React from "react";
 import useGetData from "../hooks/useGetData";
 import CardProduct from "../components/CardProduct";
+import { Spinner } from "@material-tailwind/react";
 
 function Home() {
   const { data, isPending } = useGetData("productos");
@@ -10,6 +11,7 @@ function Home() {
         data.response.map((el) => (
           <CardProduct data={el} key={el.idproducto} />
         ))}
+      {isPending && <Spinner className=" size-40" />}
     </div>
   );
 }

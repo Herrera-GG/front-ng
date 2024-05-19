@@ -2,6 +2,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import useGetData from "../hooks/useGetData";
 import CardProduct from "../components/CardProduct";
+import { Spinner } from "@material-tailwind/react";
 
 function Categorias() {
   const { idcategoria } = useParams();
@@ -18,6 +19,7 @@ function Categorias() {
         data.response[0].productos.map((el) => (
           <CardProduct data={el} key={el.idproducto} />
         ))}
+      {isPending && <Spinner className="size-40" />}
     </div>
   );
 }

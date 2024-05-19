@@ -8,6 +8,8 @@ import Carrito from "../pages/Carrito";
 import Axios from "../Axios";
 import Mantenimiento from "../pages/Mantenimiento";
 import { redirect } from "react-router-dom";
+import Login from "../pages/Login";
+import Pedidos from "../pages/Pedidos";
 
 function Routes() {
   const router = createBrowserRouter([
@@ -37,6 +39,8 @@ function Routes() {
         },
         { path: "categoria/:idcategoria", element: <Categorias /> },
         { path: "carrito", element: <Carrito /> },
+        { path: "login", element: <Login /> },
+        { path: "pedidos", element: <Pedidos /> },
       ],
     },
     {

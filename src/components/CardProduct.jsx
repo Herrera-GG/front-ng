@@ -55,7 +55,7 @@ function CardProduct({ data, isInCart, indexElement, extra, cantidad }) {
   return (
     <>
       <div
-        className={`w-full border rounded-lg shadow-2xl flex ${
+        className={`w-full border rounded-lg shadow flex ${
           isInCart ? "flex-row" : "flex-col"
         } items-center p-5 gap-5 mb-5`}
       >
@@ -83,21 +83,42 @@ function CardProduct({ data, isInCart, indexElement, extra, cantidad }) {
                   <FontAwesomeIcon icon={faPlus} />
                 </Button>
               </div>
-              <b>${data.precioUnitario}</b>
+              <b>${data.precioUnitario} c/u</b>
             </div>
           )}
-          {!isInCart && <b>${data.precioUnitario}</b>}
-
           {!isInCart && (
-            <button type="button" onClick={() => addToCart(data)}>
-              <FontAwesomeIcon className=" size-6" icon={faCartShopping} />
-            </button>
+            <div className="flex flex-col w-full">
+              <strong
+                className={`${
+                  data.existencias > 0 ? "text-blue-600" : "text-red-600"
+                } text-center`}
+              >
+                {data.existencias} disponibles
+              </strong>
+              {data.existencias > 0 && (
+                <div className="flex w-full justify-evenly items-center">
+                  <b>${data.precioUnitario} c/u</b>
+
+                  <Button
+                    variant="text"
+                    color="green"
+                    type="button"
+                    onClick={() => addToCart(data)}
+                  >
+                    <FontAwesomeIcon
+                      className=" size-6"
+                      icon={faCartShopping}
+                    />
+                  </Button>
+                </div>
+              )}
+            </div>
           )}
           {isInCart && (
             <Button
               type="button"
               color="red"
-              variant="outlined"
+              variant="text"
               className=" size-10 flex items-center justify-center"
               onClick={() => {
                 removeFromCart();
