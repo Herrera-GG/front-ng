@@ -95,6 +95,18 @@ function Carrito() {
         <DialogBody>
           <form className="flex flex-col gap-5" onSubmit={send}>
             <Input
+              label="Nombre completo"
+              color="blue"
+              name="nombreCliente"
+              onChange={handle}
+              value={
+                numTel.hasOwnProperty("nombreCliente")
+                  ? numTel["nombreCliente"]
+                  : ""
+              }
+              required
+            />
+            <Input
               label="Número de teléfono"
               color="blue"
               name="num_tel"
@@ -107,6 +119,11 @@ function Carrito() {
             <Textarea
               label="Lugar de entrega"
               color="blue"
+              value={
+                numTel.hasOwnProperty("lugarEntrega")
+                  ? numTel["lugarEntrega"]
+                  : ""
+              }
               resize
               name="lugarEntrega"
               onChange={handle}
@@ -182,7 +199,11 @@ function Carrito() {
       )}
       {!isPending && !error && (
         <div className="flex flex-col gap-5">
-          <h6 className="text-center sticky top-20 bg-white z-50">
+          <h6
+            className={`text-center sticky ${
+              productos.length > 0 ? "top-20" : "top-0"
+            } bg-white z-50`}
+          >
             Historial de pedidos
           </h6>
           {data.response.map((el) => (

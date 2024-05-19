@@ -1,8 +1,4 @@
-import {
-  faCircleCheck,
-  faCircleXmark,
-  faClock,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck, faClock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Dialog,
@@ -53,10 +49,9 @@ function CardPedidos({ el, isInCart, marcarEntregado, cancelarCart }) {
           Cancelado
         </div>
       )}
-
+      <strong className="w-full text-end">Orden no. {el.idcarritos}</strong>
       <div className="flex">
         <div className="flex flex-col w-2/4">
-          <strong>Orden no.{el.idcarritos}</strong>
           <i>Núm. telefonico: {el.num_tel}</i>
         </div>
 
@@ -75,8 +70,9 @@ function CardPedidos({ el, isInCart, marcarEntregado, cancelarCart }) {
           )}
         </div>
       </div>
+      <i>Nombre del cliente: {el.nombreCliente}</i>
       <span>Lugar de entrega: {el.lugarEntrega}</span>
-      <strong>Productos</strong>
+      <strong>Productos:</strong>
       <div>
         {JSON.parse(el.productos).map((producto) => (
           <div>
