@@ -13,6 +13,7 @@ import {
   faBorderAll,
   faUser,
   faRightFromBracket,
+  faClipboardList,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "@material-tailwind/react";
@@ -26,7 +27,7 @@ function Layout() {
     <div className="w-full h-full">
       <ToastContainer autoClose={800} closeOnClick />
       <header className="bg-gray-900 h-1/6 flex flex-col text-white">
-        <div className="flex justify-between px-10 py-3">
+        <div className="flex justify-between px-10 py-3 grow">
           <img alt="logo" src="" height="200px" />
           <div className="absolute right-0 flex items-center">
             {!localStorage.getItem("admin") && (
@@ -47,7 +48,10 @@ function Layout() {
               <>
                 <NavLink to="pedidos">
                   <Button className="rounded-full" size="sm">
-                    <FontAwesomeIcon className="size-8" icon={faUser} />
+                    <FontAwesomeIcon
+                      className="size-8"
+                      icon={faClipboardList}
+                    />
                   </Button>
                 </NavLink>
                 <Button
@@ -67,7 +71,7 @@ function Layout() {
             )}
           </div>
         </div>
-        <div className=" grow flex justify-evenly">
+        <div className="justify-evenly flex">
           <NavLink
             to="/"
             className={({ isActive }) =>

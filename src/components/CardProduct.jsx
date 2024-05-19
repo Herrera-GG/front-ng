@@ -59,28 +59,36 @@ function CardProduct({ data, isInCart, indexElement, extra, cantidad }) {
           isInCart ? "flex-row" : "flex-col"
         } items-center p-5 gap-5 mb-5`}
       >
-        <img src={data.img} loading="lazy" className=" size-40 object-cover" />
+        <img
+          src={data.img}
+          loading="lazy"
+          className={`${isInCart ? " size-20" : "size-40"} object-cover`}
+        />
         <div className="flex justify-around items-center w-full">
           {isInCart && (
             <div className="flex flex-col gap-5 items-center">
               <p className="text-center">{data.nombre}</p>
               <div className="flex gap-5 items-center">
                 <Button
+                  variant="text"
+                  color="blue-gray"
                   onClick={() => {
                     removeOneFromCart();
                     extra((prev) => !prev);
                   }}
                 >
-                  <FontAwesomeIcon icon={faMinus} />
+                  <FontAwesomeIcon className=" size-3" icon={faMinus} />
                 </Button>
                 <div className=" w-5 text-center">{cantidad}</div>
                 <Button
+                  variant="text"
+                  color="blue-gray"
                   onClick={() => {
                     addOneToCart();
                     extra((prev) => !prev);
                   }}
                 >
-                  <FontAwesomeIcon icon={faPlus} />
+                  <FontAwesomeIcon className=" size-3" icon={faPlus} />
                 </Button>
               </div>
               <b>${data.precioUnitario} c/u</b>
@@ -90,8 +98,8 @@ function CardProduct({ data, isInCart, indexElement, extra, cantidad }) {
             <div className="flex flex-col w-full">
               <strong
                 className={`${
-                  data.existencias > 0 ? "text-blue-600" : "text-red-600"
-                } text-center`}
+                  data.existencias > 0 ? "text-green-600" : "text-red-600"
+                } text-center text-xs`}
               >
                 {data.existencias} disponibles
               </strong>
@@ -101,14 +109,16 @@ function CardProduct({ data, isInCart, indexElement, extra, cantidad }) {
 
                   <Button
                     variant="text"
-                    color="green"
+                    color="blue"
                     type="button"
                     onClick={() => addToCart(data)}
+                    className="flex items-center"
                   >
                     <FontAwesomeIcon
                       className=" size-6"
                       icon={faCartShopping}
                     />
+                    Añadir al carrito
                   </Button>
                 </div>
               )}
@@ -119,13 +129,13 @@ function CardProduct({ data, isInCart, indexElement, extra, cantidad }) {
               type="button"
               color="red"
               variant="text"
-              className=" size-10 flex items-center justify-center"
+              className="flex items-center justify-center"
               onClick={() => {
                 removeFromCart();
                 extra((prev) => !prev);
               }}
             >
-              <FontAwesomeIcon icon={faTrash} />
+              <FontAwesomeIcon className="size-5" icon={faTrash} />
             </Button>
           )}
         </div>

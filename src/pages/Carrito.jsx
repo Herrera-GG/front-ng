@@ -26,9 +26,10 @@ function Carrito() {
   const [loading, setLoading] = useState(false);
   const [envio, setEnvio] = useState(4);
 
-  const { data, isPending } = useGetData(
+  const { data, isPending, error } = useGetData(
     `carritos/obtener/${localStorage.getItem("numTel")}`
   );
+  console.log(error);
 
   const productosList = productos.flat(2);
 
@@ -141,7 +142,7 @@ function Carrito() {
 
       {productos.length > 0 && (
         <>
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <i>
               Subtotal: ${" "}
               {productosList.reduce(
@@ -158,8 +159,9 @@ function Carrito() {
               ) + envio}
             </strong>
           </div>
-          <div className="w-full flex items-center justify-center p-5 sticky top-0 bg-white">
+          <div className="w-full flex items-center justify-center p-5 sticky top-0 bg-white z-50">
             <Button
+              color="blue"
               onClick={() => setShowDiag(true)}
             >{`Realizar pedido (${productosList.length}) producto(s)`}</Button>
           </div>
@@ -178,9 +180,11 @@ function Carrito() {
       {productos.length <= 0 && (
         <p className="text-center">Agrega productos a tu carrito.</p>
       )}
-      {!isPending && (
+      {!isPending && !error && (
         <div className="flex flex-col gap-5">
-          <h6 className="text-center">Historial de pedidos</h6>
+          <h6 className="text-center sticky top-20 bg-white z-50">
+            Historial de pedidos
+          </h6>
           {data.response.map((el) => (
             <CardPedidos el={el} />
           ))}

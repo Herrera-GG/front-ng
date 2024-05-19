@@ -7,16 +7,10 @@ export const multipartHeader = {
     "Content-type": "multipart/form-data",
   },
 };
-const token = localStorage.getItem("admin")
-  ? JSON.parse(localStorage.getItem("admin")).token
-  : null;
-
-console.log(token);
 
 export default Axios.create({
   headers: {
     "Content-Type": "application/json",
-    Authorization: token,
   },
   baseURL: urlMain + "/api/",
   /*  validateStatus: function (status) {

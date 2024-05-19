@@ -39,7 +39,16 @@ function Routes() {
         },
         { path: "categoria/:idcategoria", element: <Categorias /> },
         { path: "carrito", element: <Carrito /> },
-        { path: "login", element: <Login /> },
+        {
+          path: "login",
+          loader: () => {
+            if (!localStorage.getItem("admin")) {
+              return null;
+            }
+            return redirect("/pedidos");
+          },
+          element: <Login />,
+        },
         { path: "pedidos", element: <Pedidos /> },
       ],
     },

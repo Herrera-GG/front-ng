@@ -13,10 +13,14 @@ function Pedidos() {
   console.log(data);
 
   const marcarEntregado = async (idCarrito) => {
-    const { idusuario } = JSON.parse(localStorage.getItem("admin"));
+    const { idusuario, token } = JSON.parse(localStorage.getItem("admin"));
 
     try {
-      await Axios.put(`carritos/autorizar/${idCarrito}`, { idUser: idusuario });
+      await Axios.put(
+        `carritos/autorizar/${idCarrito}`,
+        { idUser: idusuario },
+        { headers: { Authorization: token } }
+      );
       toast.success("Marcado como enviado.");
       setActualizar((prev) => !prev);
     } catch (error) {
@@ -24,8 +28,11 @@ function Pedidos() {
     }
   };
   const cancelarCart = async (idCarrito) => {
+    const { token } = JSON.parse(localStorage.getItem("admin"));
     try {
-      await Axios.put(`carritos/cancelar/${idCarrito}`);
+      await Axios.put(`carritos/cancelar/${idCarrito}`, undefined, {
+        headers: { Authorization: token },
+      });
       toast.success("Orden cancelada.");
       setActualizar((prev) => !prev);
     } catch (error) {
