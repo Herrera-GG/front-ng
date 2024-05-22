@@ -56,7 +56,7 @@ function CardPedidos({ el, isInCart, marcarEntregado, cancelarCart }) {
         </div>
 
         <div className="w-2/4 flex items-center gap-5">
-          <span>Entregado: </span>
+          <span>{el.entregado ? "Entregado" : "Pendiente de entrega"}: </span>
           {el.entregado ? (
             <FontAwesomeIcon
               className="size-8 text-green-600"
@@ -87,13 +87,16 @@ function CardPedidos({ el, isInCart, marcarEntregado, cancelarCart }) {
       </strong>
       {!isInCart && (
         <div className="flex gap-5">
-          <Button
-            color="red"
-            onClick={() => setShowDiag(true)}
-            disabled={el.entregado || el.cancelado}
-          >
-            Cancelar orden
-          </Button>
+          {localStorage.getItem("admin") &&
+            JSON.parse(localStorage.getItem("admin")).rol === "admin" && (
+              <Button
+                color="red"
+                onClick={() => setShowDiag(true)}
+                disabled={el.entregado || el.cancelado}
+              >
+                Cancelar orden
+              </Button>
+            )}
           <Button
             color="blue"
             onClick={() => marcarEntregado(el.idcarritos)}

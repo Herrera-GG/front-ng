@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-export const urlMain = "https://famous-electra-blanco-835cb3d2.koyeb.app";
+export const urlMain = "https://api.programacion-blanco.com";
 
 export const multipartHeader = {
   headers: {

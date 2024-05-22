@@ -4,6 +4,7 @@ import useGetData from "../hooks/useGetData";
 import { NavLink } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import logo from "../assets/icon.png";
 import {
   faCartShopping,
   faJar,
@@ -27,8 +28,17 @@ function Layout() {
     <div className="w-full h-full">
       <ToastContainer autoClose={800} closeOnClick />
       <header className="bg-gray-900 h-1/6 flex flex-col text-white">
-        <div className="flex justify-between px-10 py-3 grow">
-          <img alt="logo" src="" height="200px" />
+        <div className="flex justify-center px-10 py-3 grow relative">
+          <NavLink to="/">
+            <img
+              alt="icono"
+              src={logo}
+              className=" size-14 object-contain absolute left-2"
+            />
+          </NavLink>
+          <i className=" text-sm absolute bottom-0">
+            Servicio solo para el TECNM campus de los Ríos.
+          </i>
           <div className="absolute right-0 flex items-center">
             {!localStorage.getItem("admin") && (
               <>
@@ -111,6 +121,10 @@ function Layout() {
 
       <div className="w-full h-5/6 overflow-y-auto">
         <Outlet />
+        <div className="flex flex-col justify-center items-center p-5 text-gray-600 ">
+          <i>Quejas y sugerencias: </i>
+          <p>961 666 1317</p>
+        </div>
       </div>
     </div>
   );

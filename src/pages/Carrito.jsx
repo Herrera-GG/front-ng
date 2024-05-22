@@ -17,6 +17,8 @@ import { toast } from "react-toastify";
 import { Textarea } from "@material-tailwind/react";
 import CardPedidos from "../components/CardPedidos";
 import { Spinner } from "@material-tailwind/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTag } from "@fortawesome/free-solid-svg-icons";
 
 function Carrito() {
   const [productos, setProductos] = useState([]);
@@ -24,7 +26,7 @@ function Carrito() {
   const [showDiag, setShowDiag] = useState(false);
   const [numTel, setNumTel] = useState("");
   const [loading, setLoading] = useState(false);
-  const [envio, setEnvio] = useState(4);
+  const [envio, setEnvio] = useState(2);
 
   const { data, isPending, error } = useGetData(
     `carritos/obtener/${localStorage.getItem("numTel")}`
@@ -84,7 +86,7 @@ function Carrito() {
     if (productosList.length > 4) {
       setEnvio(0);
     } else {
-      setEnvio(4);
+      setEnvio(2);
     }
   }, [productosList]);
 
@@ -124,13 +126,14 @@ function Carrito() {
                   ? numTel["lugarEntrega"]
                   : ""
               }
-              resize
+              rows={4}
+              resize={false}
               name="lugarEntrega"
               onChange={handle}
               required
             />
-            <i>Tú numero de telefono se usara para verificar tu orden.</i>
-            <strong className=" text-red-500">
+            <i>Se enviará un Whatsapp para validar tu compra.</i>
+            <strong className=" text-red-500 text-sm">
               Si no se logra contactar con el numero de telefono proporcionado,
               se cancelara la orden.
             </strong>
@@ -168,6 +171,7 @@ function Carrito() {
               )}
             </i>
             <i>Envio: ${envio}</i>
+
             <strong className="w-full border-t-2 text-xl">
               Total: $
               {productosList.reduce(
@@ -175,6 +179,12 @@ function Carrito() {
                 0
               ) + envio}
             </strong>
+          </div>
+          <div className="flex justify-evenly border p-2 rounded-lg items-center w-full text-gray-600">
+            <div className="p-2 rounded-full bg-blue-600 size-8 flex justify-center items-center text-white">
+              <FontAwesomeIcon className="size-5" icon={faTag} />
+            </div>
+            Envio gratis a partir de 5 productos.
           </div>
           <div className="w-full flex items-center justify-center p-5 sticky top-0 bg-white z-50">
             <Button
