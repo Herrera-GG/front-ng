@@ -73,10 +73,11 @@ function CardPedidos({ el, isInCart, marcarEntregado, cancelarCart }) {
       <i>Nombre del cliente: {el.nombreCliente}</i>
       <span>Lugar de entrega: {el.lugarEntrega}</span>
       <strong>Productos:</strong>
-      <div>
+      <div className="flex flex-col gap-5 p-2">
         {JSON.parse(el.productos).map((producto) => (
-          <div>
-            {producto.length} x {producto[0]["nombre"]}
+          <div className="flex gap-5">
+            <img src={producto[0]["img"]} className=" size-10 object-contain" />
+            {producto.length} x {producto[0]["nombre"]}{" "}
           </div>
         ))}
       </div>
