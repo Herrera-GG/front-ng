@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-export const urlMain = "https://api.programacion-blanco.com";
+export const urlMain = "http://localhost:3000";
 
 export const multipartHeader = {
   headers: {

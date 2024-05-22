@@ -7,6 +7,7 @@ import { Button } from "@material-tailwind/react";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faMinus } from "@fortawesome/free-solid-svg-icons";
+import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 
 function CardProduct({ data, isInCart, indexElement, extra, cantidad }) {
   const addToCart = (element) => {
@@ -112,13 +113,10 @@ function CardProduct({ data, isInCart, indexElement, extra, cantidad }) {
                     color="blue"
                     type="button"
                     onClick={() => addToCart(data)}
-                    className="flex items-center"
+                    className="flex items-center gap-2"
                   >
-                    <FontAwesomeIcon
-                      className=" size-6"
-                      icon={faCartShopping}
-                    />
-                    Añadir al carrito
+                    <FontAwesomeIcon className=" size-6" icon={faCartPlus} />{" "}
+                    Añadir al carrito.
                   </Button>
                 </div>
               )}

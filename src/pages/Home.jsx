@@ -11,7 +11,7 @@ function Home() {
     <div className=" p-10 flex flex-col flex-wrap gap-5 justify-center">
       <div className="flex justify-evenly border p-2 rounded-lg items-center w-full text-gray-600">
         <div className="p-2 rounded-full bg-blue-600 size-8 flex justify-center items-center text-white">
-          <FontAwesomeIcon className="size-5" icon={faTag} />
+          <FontAwesomeIcon className="size-5" icon={faTag} shake />
         </div>
         Envio gratis a partir de 5 productos.
       </div>
