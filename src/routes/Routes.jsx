@@ -10,6 +10,7 @@ import Mantenimiento from "../pages/Mantenimiento";
 import { redirect } from "react-router-dom";
 import Login from "../pages/Login";
 import Pedidos from "../pages/Pedidos";
+import Dashboard from "../pages/Dashboard";
 
 function Routes() {
   const router = createBrowserRouter([
@@ -50,6 +51,7 @@ function Routes() {
           element: <Login />,
         },
         { path: "pedidos", element: <Pedidos /> },
+        { path: "dashboard", element: <Dashboard /> },
       ],
     },
     {
