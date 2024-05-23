@@ -13,7 +13,7 @@ function Categorias() {
 
   return (
     <div className=" p-10 flex flex-wrap flex-col gap-5 justify-center">
-      <div className="flex justify-evenly border p-2 rounded-lg items-center w-full text-gray-600">
+      <div className="flex justify-evenly p-2 rounded-lg items-center w-full text-gray-600">
         <div className="p-2 rounded-full bg-blue-600 size-8 flex justify-center items-center text-white">
           <FontAwesomeIcon className="size-5" icon={faTag} shake />
         </div>

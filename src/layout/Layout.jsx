@@ -121,9 +121,10 @@ function Layout() {
 
       <div className="w-full h-5/6 overflow-y-auto">
         <Outlet />
-        <div className="flex flex-col justify-center items-center p-5 text-gray-600 ">
+        <div className="grow flex flex-col justify-end items-center p-5 text-gray-600 ">
           <i>Quejas y sugerencias: </i>
           <p>961 666 1317</p>
+          <span className="w-full text-end">Versión 0.0.5</span>
         </div>
       </div>
     </div>
